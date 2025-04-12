@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FreshMart | Grocery at Your Fingertips</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">🥬 FreshMart</div>
+    <ul class="nav-links">
+      <li><a href="#">Home</a></li>
+      <li><a href="./products.html">Product Listing</a></li>
+      <li><a href="./cart.html">Cart</a></li>
+      <li><a href="./login.html"  >Login</a></li>
+      <li><a href="#">logout </a></li>
+      <li><button id="toggle-theme" class="dark-toggle">🌙</button></li>
+    </ul>
+  </nav>
+  
+    
+
+ 
+
+  <section class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search for groceries..." />
+    <button class="search-btn">🔍</button>
+  </section>
+  <header class="hero">
+    <div class="hero-content">
+      <h1>Fresh Groceries, Delivered Fast</h1>
+      <p>Shop farm-fresh produce, daily essentials, and much more.</p>
+      <a href="./products.html" class="btn-primary">Shop Now</a>
+    </div>
+  </header>
+  <section class="categories">
+    <h2>Shop by Category</h2>
+    <div class="category-grid">
+      <div class="category-card">🍎 Fruits</div>
+      <div class="category-card">🥦 Vegetables</div>
+      <div class="category-card">🧀 Dairy</div>
+      <div class="category-card">🍞 Bakery</div>
+      <div class="category-card">🥫 Pantry</div>
+      <div class="category-card">🧼 Household</div>
+    </div>
+  </section>
+  <section class="featured">
+    <h2 class="section-title">Top Picks for You</h2>
+    <div class="product-grid">
+      <div class="product-card">
+        <img src="images/apple.jpg" alt="Apple" />
+        <h3>Fresh Apples</h3>
+        <p>₹120 / kg</p>
+        <button onclick="addToCart('Fresh Apples', 120)">Add to Cart</button>
+      </div>
+      
+      <div class="product-card">
+        <img src="images/tomato.jpg" alt="Tomato" />
+        <h3>Tomatoes</h3>
+        <p>₹30 / kg</p>
+        <button onclick="addToCart('Tomatoes', 30)">Add to Cart</button>
+      </div>
+      
+      <div class="product-card">
+        <img src="images/rice.jpg" alt="Rice" />
+        <h3>Basmati Rice</h3>
+        <p>₹85 / kg</p>
+        <button onclick="addToCart('Basmati Rice', 85)">Add to Cart</button>
+      </div>
+      
+      </div>
+    </div>
+  </section>
+  <footer class="footer">
+    <div class="footer-content">
+      <p>© 2025 FreshMart. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="./contact.html">Contact</a>
+        <a href="#">Privacy</a>
+        <a href="#">Instagram</a>
+      </div>
+    </div>
+  </footer>
+ <script>
+    function addToCart(name, price) {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  
+      const existing = cart.find(item => item.name === name);
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({ name, price, quantity: 1 });
+      }
+  
+      localStorage.setItem('cart', JSON.stringify(cart));
+      alert(`${name} added to cart!`);
+    }
+  </script>
+  
+  <script src="./script.js"></script>
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Modern Glassmorphism Auth Page</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: url('https://c4.wallpaperflare.com/wallpaper/714/107/583/purple-nature-colorful-trees-wallpaper-preview.jpg') no-repeat center center/cover;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      position: relative;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      padding: 40px;
+      width: 350px;
+      overflow: hidden;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: transparent;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: white;
+      z-index: 2;
+      transition: transform 0.2s;
+    }
+
+    .close-btn:hover {
+      transform: rotate(90deg);
+    }
+
+    .form-container {
+      width: 100%;
+      transition: transform 0.5s ease-in-out;
+    }
+
+    h2 {
+      text-align: center;
+      color: white;
+      margin-bottom: 20px;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 25px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 10px 10px 10px 0;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid white;
+      color: white;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .input-group label {
+      position: absolute;
+      left: 0;
+      top: 10px;
+      color: white;
+      pointer-events: none;
+      transition: 0.3s ease;
+    }
+
+    .input-group input:focus ~ label,
+    .input-group input:not(:placeholder-shown) ~ label {
+      top: -15px;
+      font-size: 12px;
+      color: #00c6ff;
+    }
+
+    .checkbox-forgot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: white;
+    }
+
+    .checkbox-forgot label,
+    .checkbox-forgot a {
+      color: white;
+    }
+
+    .checkbox-forgot a {
+      text-decoration: none;
+    }
+
+    .checkbox-forgot a:hover {
+      text-decoration: underline;
+    }
+
+    .form-container button {
+      width: 100%;
+      padding: 10px;
+      background: linear-gradient(45deg, #00c6ff, #0072ff);
+      border: none;
+      border-radius: 25px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .form-container button:hover {
+      background: linear-gradient(45deg, #0072ff, #00c6ff);
+    }
+
+    .toggle-link {
+      text-align: center;
+      margin-top: 15px;
+      color: white;
+      font-size: 14px;
+    }
+
+    .toggle-link span {
+  cursor: pointer;
+  text-decoration: none;
+  transition: text-decoration 0.2s ease;
+}
+
+.toggle-link span:hover {
+  text-decoration: underline;
+}
+
+
+    /* Hide signup form initially */
+    #signupForm {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Close Button -->
+    <button class="close-btn" onclick="goHome()">✖</button>
+
+    <!-- Login Form -->
+    <div class="form-container" id="loginForm">
+      <h2>Login</h2>
+      <div class="input-group">
+        <input type="email" required placeholder=" " />
+        <label>Email</label>
+      </div>
+      <div class="input-group">
+        <input type="password" required placeholder=" " />
+        <label>Password</label>
+      </div>
+      <div class="checkbox-forgot">
+        <div>
+          <input type="checkbox" id="rememberMe" />
+          <label for="rememberMe">Remember me</label>
+        </div>
+        <a href="#">Forgot Password?</a>
+      </div>
+      <button type="submit">Login</button>
+      <div class="toggle-link">Don't have an account? <span onclick="toggleForm()">Sign up</span></div>
+    </div>
+
+    <!-- Signup Form (initially hidden) -->
+    <div class="form-container" id="signupForm">
+      <h2>Sign Up</h2>
+      <div class="input-group">
+        <input type="text" required placeholder=" " />
+        <label>Username</label>
+      </div>
+      <div class="input-group">
+        <input type="email" required placeholder=" " />
+        <label>Email</label>
+      </div>
+      <div class="input-group">
+        <input type="password" required placeholder=" " />
+        <label>Password</label>
+      </div>
+      <div class="input-group">
+        <input type="password" required placeholder=" " />
+        <label>Confirm Password</label>
+      </div>
+      <button type="submit">Sign Up</button>
+      <div class="toggle-link">Already have an account? <span onclick="toggleForm()">Login</span></div>
+    </div>
+  </div>
+
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+
+    function toggleForm() {
+      if (loginForm.style.display !== 'none') {
+        loginForm.style.display = 'none';
+        signupForm.style.display = 'block';
+      } else {
+        loginForm.style.display = 'block';
+        signupForm.style.display = 'none';
+      }
+    }
+
+    function goHome() {
+      window.location.href = './index.html'; // Change to your home page
+    }
+  </script>
+
+</body>
+</html>
