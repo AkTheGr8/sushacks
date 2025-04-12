@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Product Details - FreshMart</title>
+  <title>Product Detail</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: Arial, sans-serif;
       margin: 0;
-      background-color: #f9f9f9;
+      background: #f5f5f5;
     }
 
     header {
@@ -19,191 +19,198 @@
       align-items: center;
     }
 
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin-left: 20px;
-    }
-
-    nav a:hover {
-      text-decoration: underline;
-    }
-
-    .product-detail {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 30px;
+    .container {
       max-width: 1000px;
       margin: 40px auto;
       padding: 20px;
       background: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-radius: 8px;
     }
 
-    .product-detail img {
+    .product-details {
+      display: flex;
+      gap: 30px;
+    }
+
+    .product-details img {
       width: 300px;
-      border-radius: 10px;
+      border-radius: 8px;
     }
 
-    .product-info {
+    .details {
       flex: 1;
     }
 
-    .product-info h2 {
+    .details h2 {
       margin-top: 0;
-      color: #2e7d32;
     }
 
-    .product-info p {
-      font-size: 18px;
-      margin: 10px 0;
-    }
-
-    .product-info button {
+    .details button {
       padding: 10px 20px;
       background-color: #2e7d32;
       color: white;
       border: none;
-      font-size: 16px;
-      border-radius: 6px;
+      border-radius: 5px;
       cursor: pointer;
     }
 
-    .product-info button:hover {
-      background-color: #1b5e20;
-    }
-
     .recommended {
-      max-width: 1000px;
-      margin: 40px auto;
-      padding: 10px 20px;
+      margin-top: 40px;
     }
 
     .recommended h3 {
-      color: #2e7d32;
       margin-bottom: 20px;
     }
 
     .recommended-products {
       display: flex;
-      flex-wrap: wrap;
       gap: 20px;
+      flex-wrap: wrap;
     }
 
-    .recommended-card {
-      background: white;
-      padding: 15px;
-      width: 200px;
-      text-align: center;
+    .recommended-product {
+      background: #fafafa;
+      padding: 10px;
       border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 200px;
     }
 
-    .recommended-card img {
+    .recommended-product img {
       width: 100%;
-      height: 140px;
+      height: 160px;
       object-fit: cover;
-      border-radius: 6px;
     }
 
-    .recommended-card button {
+    .recommended-product button {
       margin-top: 10px;
       padding: 8px 15px;
       background-color: #2e7d32;
       color: white;
       border: none;
-      font-size: 14px;
       border-radius: 5px;
       cursor: pointer;
-    }
-
-    .recommended-card button:hover {
-      background-color: #1b5e20;
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h2>FreshMart</h2>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="products.html">Products</a>
-      <a href="cart.html">Cart</a>
-      <a href="checkout.html">Checkout</a>
-    </nav>
-  </header>
+<header>
+  <h2>FreshMart</h2>
+</header>
 
-  <div class="product-detail">
-    <img id="productImage" src="" alt="Product Image">
-    <div class="product-info">
-      <h2 id="productName">Product Name</h2>
-      <p id="productPrice">Price: ₹0</p>
-      <p>A high quality grocery product directly from the farm, 100% fresh and organic.</p>
-      <button onclick="addToCartFromDetail()">Add to Cart</button>
-    </div>
-  </div>
+<div class="container" id="productContainer">
+  <!-- Product details will go here -->
+</div>
 
-  <div class="recommended">
-    <h3>Recommended Products</h3>
-    <div class="recommended-products" id="recommendedList">
-      <!-- Recommended Products -->
-    </div>
-  </div>
-
-  <script>
-    // Get query parameters
-    const params = new URLSearchParams(window.location.search);
-    const name = params.get('name') || 'Unknown Product';
-    const price = parseFloat(params.get('price')) || 0;
-    const image = params.get('image') || 'placeholder.jpg';
-
-    // Fill product details
-    document.getElementById('productName').textContent = name;
-    document.getElementById('productPrice').textContent = 'Price: ₹' + price;
-    document.getElementById('productImage').src = 'images/' + image;
-
-    // Add to cart from main product
-    function addToCartFromDetail() {
-      addToCart(name, price);
+<script>
+  const products = [
+    {
+      name: "Apple",
+      price: 2.99,
+      description: "Fresh and juicy apples straight from the farm.",
+      image: "images/apple.jpg"
+    },
+    {
+      name: "Banana",
+      price: 1.5,
+      description: "Sweet and ripe bananas full of nutrients.",
+      image: "images/banana.jpg"
+    },
+    {
+      name: "Carrot",
+      price: 1.2,
+      description: "Crunchy and organic carrots for your healthy meals.",
+      image: "images/carrot.jpg"
     }
+  ];
 
-    // Generic addToCart for recommended too
-    function addToCart(prodName, prodPrice) {
-      let cart = JSON.parse(localStorage.getItem('cart')) || [];
-      const existing = cart.find(item => item.name === prodName);
-
-      if (existing) {
-        existing.quantity += 1;
-      } else {
-        cart.push({ name: prodName, price: prodPrice, quantity: 1 });
-      }
-
-      localStorage.setItem('cart', JSON.stringify(cart));
-      alert(`${prodName} added to cart!`);
+  const recommended = [
+    {
+      name: "Mango",
+      price: 3.5,
+      image: "images/mango.jpg"
+    },
+    {
+      name: "Tomato",
+      price: 1.1,
+      image: "images/tomato.jpg"
+    },
+    {
+      name: "Potato",
+      price: 0.99,
+      image: "images/potato.jpg"
     }
+  ];
 
-    // Recommended products list
-    const recommendedProducts = [
-      { name: 'Tomatoes', price: 30, image: 'tomato.jpg' },
-      { name: 'Potatoes', price: 25, image: 'potato.jpg' },
-      { name: 'Basmati Rice', price: 85, image: 'rice.jpg' }
-    ];
+  function getQueryParam(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+  }
 
-    const recommendedList = document.getElementById('recommendedList');
-    recommendedProducts.forEach(p => {
-      const div = document.createElement('div');
-      div.className = 'recommended-card';
-      div.innerHTML = `
-        <img src="images/${p.image}" alt="${p.name}">
-        <h4>${p.name}</h4>
-        <p>₹${p.price}</p>
-        <button onclick="addToCart('${p.name}', ${p.price})">Add to Cart</button>
-      `;
-      recommendedList.appendChild(div);
-    });
-  </script>
+  function renderProductDetail(product) {
+    const container = document.getElementById("productContainer");
+    container.innerHTML = `
+      <div class="product-details">
+        <img src="${product.image}" alt="${product.name}">
+        <div class="details">
+          <h2>${product.name}</h2>
+          <p>${product.description}</p>
+          <h3>₹${product.price.toFixed(2)}</h3>
+          <button onclick="addToCart('${product.name}', ${product.price}, '${product.image}')">Add to Cart</button>
+        </div>
+      </div>
+      ${renderRecommended()}
+    `;
+  }
+
+  function renderNotFound() {
+    const container = document.getElementById("productContainer");
+    container.innerHTML = `
+      <h2>Product not found.</h2>
+      ${renderRecommended()}
+    `;
+  }
+
+  function renderRecommended() {
+    return `
+      <div class="recommended">
+        <h3>Recommended Products</h3>
+        <div class="recommended-products">
+          ${recommended.map(prod => `
+            <div class="recommended-product">
+              <img src="${prod.image}" alt="${prod.name}">
+              <h4>${prod.name}</h4>
+              <p>₹${prod.price}</p>
+              <button onclick="addToCart('${prod.name}', ${prod.price}, '${prod.image}')">Add to Cart</button>
+            </div>
+          `).join("")}
+        </div>
+      </div>
+    `;
+  }
+
+  function addToCart(name, price, image) {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const existing = cart.find(item => item.name === name);
+    if (existing) {
+      existing.quantity += 1;
+    } else {
+      cart.push({ name, price, image, quantity: 1 });
+    }
+    localStorage.setItem("cart", JSON.stringify(cart));
+    alert(`${name} added to cart!`);
+  }
+
+  const searchQuery = getQueryParam("product");
+  const foundProduct = products.find(p => p.name.toLowerCase() === searchQuery?.toLowerCase());
+
+  if (foundProduct) {
+    renderProductDetail(foundProduct);
+  } else {
+    renderNotFound();
+  }
+</script>
 
 </body>
 </html>
