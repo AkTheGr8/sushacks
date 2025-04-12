@@ -1,174 +1,204 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Your Cart - FreshMart</title>
-    <style>
-      body {
-        font-family: "Segoe UI", sans-serif;
-        margin: 0;
-        padding: 0;
-        background: #f8f8f8;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <title>Cart - FreshMart</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f5f5f5;
+    }
 
-      header {
-        background-color: #2e7d32;
-        padding: 15px 30px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        color: white;
-      }
+    header {
+      background-color: #2e7d32;
+      color: white;
+      padding: 15px 30px;
+      font-size: 24px;
+    }
 
-      nav a {
-        color: white;
-        text-decoration: none;
-        margin-left: 20px;
-        font-weight: 500;
-      }
+    header nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      font-size: 16px;
+      transition: color 0.3s;
+    }
 
-      nav a:hover {
-        text-decoration: underline;
-      }
+    header nav a:hover {
+      color: #a5d6a7;
+    }
 
-      h1 {
-        text-align: center;
-        color: #2e7d32;
-        margin-top: 30px;
-      }
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
+    }
 
-      .cart-container {
-        max-width: 900px;
-        margin: 30px auto;
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
 
-      table {
-        width: 100%;
-        border-collapse: collapse;
-      }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
 
-      th,
-      td {
-        text-align: center;
-        padding: 12px;
-        border-bottom: 1px solid #ddd;
-      }
+    th {
+      background-color: #e0f2f1;
+    }
 
-      th {
-        background-color: #eeeeee;
-      }
+    .quantity-control button {
+      padding: 4px 10px;
+      background: #2e7d32;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      margin: 0 5px;
+    }
 
-      button {
-        background-color: #e53935;
-        color: white;
-        border: none;
-        padding: 5px 10px;
-        border-radius: 4px;
-        cursor: pointer;
-      }
+    .remove-btn {
+      background: none;
+      border: none;
+      color: #d32f2f;
+      font-size: 18px;
+      cursor: pointer;
+    }
 
-      button:hover {
-        background-color: #2b8e4a;
-      }
+    .cart-total {
+      text-align: right;
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 30px;
+    }
 
-      .total {
-        text-align: right;
-        font-size: 18px;
-        font-weight: bold;
-        margin-top: 20px;
-      }
+    .checkout-btn {
+      margin-top: 20px;
+      float: right;
+      padding: 12px 24px;
+      background: #388e3c;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
 
-      .checkout-btn {
-        display: block;
-        margin: 20px auto;
-        padding: 10px 20px;
-        background-color: #28a745;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-      }
-    </style>
-  </head>
-  <body>
-    <!-- ✅ NAV HEADER -->
-    <header>
-      <h2>FreshMart</h2>
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="products.html">Products</a>
-        <a href="cart.html">Cart</a>
-        <a href="checkout.html">Checkout</a>
-      </nav>
-    </header>
+    .checkout-btn:hover {
+      background: #2e7d32;
+    }
 
-    <h1>Your Shopping Cart</h1>
+    .empty-cart {
+      text-align: center;
+      font-size: 18px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
 
-    <div class="cart-container">
-      <table id="cartTable">
+<header>
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div><strong>🥬 FreshMart</strong></div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="cart.html">Cart</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+  <div id="cartItems"></div>
+  <div class="cart-total" id="totalPrice">Total: ₹0.00</div>
+  <button class="checkout-btn" onclick="goToCheckout()">Checkout</button>
+</div>
+
+<script>
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  function renderCart() {
+    const cartContainer = document.getElementById("cartItems");
+    cartContainer.innerHTML = "";
+
+    if (cart.length === 0) {
+      cartContainer.innerHTML = "<p class='empty-cart'>🛒 Your cart is empty.</p>";
+      document.getElementById("totalPrice").textContent = "Total: ₹0.00";
+      return;
+    }
+
+    let table = `
+      <table>
         <thead>
           <tr>
             <th>Product</th>
-            <th>Price</th>
+            <th>Price (₹)</th>
             <th>Quantity</th>
-            <th>Subtotal</th>
-            <th>Action</th>
+            <th>Total (₹)</th>
+            <th>Remove</th>
           </tr>
         </thead>
-        <tbody id="cartItems">
-          <!-- Cart items will be injected here -->
-        </tbody>
-      </table>
-      <section class="cart-summary">
-        <h2>Cart Summary</h2>
-        <div class="total">
-          <p>Total: ₹<span id="cart-total">0</span></p>
-        </div>
-        <a href="./checkout.html"><button class="checkout-btn">Proceed to Checkout</button></a>
-      </section>
-    </div>
+        <tbody>
+    `;
 
-    <script>
-      function loadCart() {
-        const cart = JSON.parse(localStorage.getItem("cart")) || [];
-        const cartItems = document.getElementById("cartItems");
-        const cartTotal = document.getElementById("cart-total");
-        cartItems.innerHTML = "";
-        let total = 0;
-
-        cart.forEach((item, index) => {
-          const subtotal = item.price * item.quantity;
-          total += subtotal;
-
-          const row = document.createElement("tr");
-          row.innerHTML = `
-        <td>${item.name}</td>
-        <td>₹${item.price}</td>
-        <td>${item.quantity}</td>
-        <td>₹${subtotal}</td>
-        <td><button onclick="removeItem(${index})">Remove</button></td>
+    cart.forEach((item, index) => {
+      const itemTotal = item.price * item.quantity;
+      table += `
+        <tr>
+          <td>${item.name}</td>
+          <td>${item.price.toFixed(2)}</td>
+          <td>
+            <div class="quantity-control">
+              <button onclick="changeQuantity(${index}, -1)">−</button>
+              ${item.quantity}
+              <button onclick="changeQuantity(${index}, 1)">+</button>
+            </div>
+          </td>
+          <td>₹${itemTotal.toFixed(2)}</td>
+          <td><button class="remove-btn" onclick="removeItem(${index})">🗑️</button></td>
+        </tr>
       `;
-          cartItems.appendChild(row);
-        });
+    });
 
-        cartTotal.textContent = total;
-        localStorage.setItem("totalPrice", total); // ✅ Save total price
-      }
+    table += `</tbody></table>`;
+    cartContainer.innerHTML = table;
 
-      function removeItem(index) {
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
-        cart.splice(index, 1);
-        localStorage.setItem("cart", JSON.stringify(cart));
-        loadCart();
-      }
+    updateTotal();
+  }
 
-      document.addEventListener("DOMContentLoaded", () => {
-        loadCart();
-      });
-    </script>
-  </body>
+  function changeQuantity(index, delta) {
+    cart[index].quantity += delta;
+    if (cart[index].quantity < 1) cart[index].quantity = 1;
+    localStorage.setItem("cart", JSON.stringify(cart));
+    renderCart();
+  }
+
+  function removeItem(index) {
+    cart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    renderCart();
+  }
+
+  function updateTotal() {
+    const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    document.getElementById("totalPrice").textContent = `Total: ₹${total.toFixed(2)}`;
+  }
+
+  function goToCheckout() {
+    window.location.href = "checkout.html";
+  }
+
+  renderCart();
+</script>
+
+</body>
 </html>
