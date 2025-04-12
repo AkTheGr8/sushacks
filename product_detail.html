@@ -1,196 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Product Detail | FreshMart</title>
+  <meta charset="UTF-8">
+  <title>Product Details - FreshMart</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #f7f9fc;
       margin: 0;
-      padding: 0;
+      background-color: #f9f9f9;
     }
-    .navbar {
-      background-color: #ffffff;
-      padding: 1rem 2rem;
+
+    header {
+      background-color: #2e7d32;
+      padding: 15px 30px;
+      color: white;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     }
-    .logo {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #2a9d8f;
-    }
-    .nav-links {
-      list-style: none;
-      display: flex;
-      gap: 1.2rem;
-    }
-    .nav-links li a {
+
+    nav a {
+      color: white;
       text-decoration: none;
-      color: #333;
-      font-weight: 500;
+      margin-left: 20px;
     }
-    .product-container {
-      max-width: 1200px;
-      margin: 2rem auto;
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .product-detail {
       display: flex;
-      gap: 2rem;
-      padding: 1rem;
-      background-color: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      flex-wrap: wrap;
+      gap: 30px;
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
-    .product-image {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .product-image img {
-      max-width: 100%;
-      max-height: 400px;
-      object-fit: contain;
+
+    .product-detail img {
+      width: 300px;
       border-radius: 10px;
     }
-    .product-details {
-      flex: 2;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
+
+    .product-info {
+      flex: 1;
     }
-    .product-title {
-      font-size: 2rem;
-      color: #2a9d8f;
-      margin: 0;
+
+    .product-info h2 {
+      margin-top: 0;
+      color: #2e7d32;
     }
-    .product-description {
-      color: #555;
-      font-size: 1rem;
+
+    .product-info p {
+      font-size: 18px;
+      margin: 10px 0;
     }
-    .product-meta {
-      background-color: #f1f1f1;
-      padding: 1rem;
-      border-radius: 8px;
-    }
-    .price {
-      color: #e76f51;
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-    .stock-status {
-      color: green;
-      font-weight: bold;
-    }
-    .add-to-cart-btn {
-      background-color: #2a9d8f;
+
+    .product-info button {
+      padding: 10px 20px;
+      background-color: #2e7d32;
       color: white;
       border: none;
-      padding: 1rem;
-      font-size: 1rem;
-      border-radius: 8px;
+      font-size: 16px;
+      border-radius: 6px;
       cursor: pointer;
-      margin-top: 1rem;
-      width: fit-content;
     }
-    .add-to-cart-btn:hover {
-      background-color: #21867a;
+
+    .product-info button:hover {
+      background-color: #1b5e20;
     }
-    .recommended-section {
-      max-width: 1200px;
-      margin: 2rem auto;
-      padding: 1rem;
+
+    .recommended {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 10px 20px;
     }
-    .recommended-section h3 {
-      color: #2a9d8f;
-      margin-bottom: 1rem;
+
+    .recommended h3 {
+      color: #2e7d32;
+      margin-bottom: 20px;
     }
-    .recommended-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
+
+    .recommended-products {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
     }
-    .recommended-item {
-      background-color: #fff;
-      padding: 1rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+
+    .recommended-card {
+      background: white;
+      padding: 15px;
+      width: 200px;
       text-align: center;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
-    .recommended-item img {
-      max-width: 100%;
-      height: 120px;
-      object-fit: contain;
-      margin-bottom: 0.5rem;
+
+    .recommended-card img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 6px;
     }
-    .recommended-item h4 {
-      margin: 0.5rem 0;
-      color: #333;
+
+    .recommended-card button {
+      margin-top: 10px;
+      padding: 8px 15px;
+      background-color: #2e7d32;
+      color: white;
+      border: none;
+      font-size: 14px;
+      border-radius: 5px;
+      cursor: pointer;
     }
-    .recommended-item p {
-      color: #2a9d8f;
-      font-weight: bold;
+
+    .recommended-card button:hover {
+      background-color: #1b5e20;
     }
   </style>
 </head>
 <body>
-  <nav class="navbar">
-    <div class="logo">🥬 FreshMart</div>
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="products.html">Product Listing</a></li>
-      <li><a href="cart.html">Cart</a></li>
-    </ul>
-  </nav>
 
-  <div class="product-container">
-    <div class="product-image">
-      <img src="https://via.placeholder.com/400?text=Organic+Apples" alt="Organic Apples">
-    </div>
-    <div class="product-details">
-      <h1 class="product-title">Organic Apples</h1>
-      <div class="product-meta">
-        <p class="price">$2.99 / kg</p>
-        <p class="stock-status">In Stock</p>
-      </div>
-      <p class="product-description">
-        Enjoy the crisp and refreshing taste of our Organic Apples. Sourced from the finest farms, these apples are rich in fiber, antioxidants, and natural flavor. Perfect for snacking, baking, or adding to salads.
-      </p>
-      <p class="product-description">
-        Grown without synthetic pesticides or GMOs, our apples are not only delicious but also healthy and environmentally friendly. Store them in a cool place and enjoy within a week for best taste.
-      </p>
-      <button class="add-to-cart-btn" onclick="addToCart('Organic Apples')">Add to Cart</button>
+  <header>
+    <h2>FreshMart</h2>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="cart.html">Cart</a>
+      <a href="checkout.html">Checkout</a>
+    </nav>
+  </header>
+
+  <div class="product-detail">
+    <img id="productImage" src="" alt="Product Image">
+    <div class="product-info">
+      <h2 id="productName">Product Name</h2>
+      <p id="productPrice">Price: ₹0</p>
+      <p>A high quality grocery product directly from the farm, 100% fresh and organic.</p>
+      <button onclick="addToCartFromDetail()">Add to Cart</button>
     </div>
   </div>
 
-  <div class="recommended-section">
+  <div class="recommended">
     <h3>Recommended Products</h3>
-    <div class="recommended-grid">
-      <div class="recommended-item">
-        <img src="https://via.placeholder.com/150?text=Bananas" alt="Bananas">
-        <h4>Bananas</h4>
-        <p>$1.49/kg</p>
-      </div>
-      <div class="recommended-item">
-        <img src="https://via.placeholder.com/150?text=Tomatoes" alt="Tomatoes">
-        <h4>Tomatoes</h4>
-        <p>$1.99/kg</p>
-      </div>
-      <div class="recommended-item">
-        <img src="https://via.placeholder.com/150?text=Milk" alt="Milk">
-        <h4>Fresh Milk</h4>
-        <p>$0.99/L</p>
-      </div>
+    <div class="recommended-products" id="recommendedList">
+      <!-- Recommended Products -->
     </div>
   </div>
 
   <script>
-    function addToCart(productName) {
-      alert(productName + " added to cart!");
+    // Get query parameters
+    const params = new URLSearchParams(window.location.search);
+    const name = params.get('name') || 'Unknown Product';
+    const price = parseFloat(params.get('price')) || 0;
+    const image = params.get('image') || 'placeholder.jpg';
+
+    // Fill product details
+    document.getElementById('productName').textContent = name;
+    document.getElementById('productPrice').textContent = 'Price: ₹' + price;
+    document.getElementById('productImage').src = 'images/' + image;
+
+    // Add to cart from main product
+    function addToCartFromDetail() {
+      addToCart(name, price);
     }
+
+    // Generic addToCart for recommended too
+    function addToCart(prodName, prodPrice) {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const existing = cart.find(item => item.name === prodName);
+
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({ name: prodName, price: prodPrice, quantity: 1 });
+      }
+
+      localStorage.setItem('cart', JSON.stringify(cart));
+      alert(`${prodName} added to cart!`);
+    }
+
+    // Recommended products list
+    const recommendedProducts = [
+      { name: 'Tomatoes', price: 30, image: 'tomato.jpg' },
+      { name: 'Potatoes', price: 25, image: 'potato.jpg' },
+      { name: 'Basmati Rice', price: 85, image: 'rice.jpg' }
+    ];
+
+    const recommendedList = document.getElementById('recommendedList');
+    recommendedProducts.forEach(p => {
+      const div = document.createElement('div');
+      div.className = 'recommended-card';
+      div.innerHTML = `
+        <img src="images/${p.image}" alt="${p.name}">
+        <h4>${p.name}</h4>
+        <p>₹${p.price}</p>
+        <button onclick="addToCart('${p.name}', ${p.price})">Add to Cart</button>
+      `;
+      recommendedList.appendChild(div);
+    });
   </script>
+
 </body>
 </html>
