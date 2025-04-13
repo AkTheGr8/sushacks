@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Checkout - FreshMart</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f5f5f5;
+    }
+
+    header {
+      background-color: #2e7d32;
+      color: white;
+      padding: 15px 30px;
+      font-size: 24px;
+    }
+
+    header nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      font-size: 16px;
+      transition: color 0.3s;
+    }
+
+    header nav a:hover {
+      color: #a5d6a7;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    form {
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #e0f2f1;
+    }
+
+    .total-amount {
+      text-align: right;
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    .place-order-btn {
+      float: right;
+      padding: 12px 24px;
+      background: #388e3c;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .place-order-btn:hover {
+      background: #2e7d32;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div><strong>🥬 FreshMart</strong></div>
+    <nav>
+      <a href="{{ url_for('index') }}">Home</a>
+      <a href="{{ url_for('products') }}">Products</a>
+      <a href="{{ url_for('cart') }}">Cart</a>
+      <a href="{{ url_for('about') }}">About</a>
+      <a href="{{ url_for('contact') }}">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+  <h2>Checkout</h2>
+
+  <!-- Shipping Form -->
+  <form id="shippingForm">
+    <h3>Shipping Details</h3>
+    <div class="form-group">
+      <label for="fullName">Full Name*</label>
+      <input type="text" id="fullName" required />
+    </div>
+    <div class="form-group">
+      <label for="address">Address*</label>
+      <input type="text" id="address" required />
+    </div>
+    <div class="form-group">
+      <label for="city">City*</label>
+      <input type="text" id="city" required />
+    </div>
+    <div class="form-group">
+      <label for="state">State*</label>
+      <input type="text" id="state" required />
+    </div>
+    <div class="form-group">
+      <label for="zip">Zip Code*</label>
+      <input type="text" id="zip" required />
+    </div>
+    <div class="form-group">
+      <label for="phone">Phone Number*</label>
+      <input type="text" id="phone" required />
+    </div>
+    <div class="form-group">
+      <label for="email">Email*</label>
+      <input type="email" id="email" required />
+    </div>
+  </form>
+
+  <!-- Cart Details -->
+  <div id="checkoutDetails"></div>
+  <div class="total-amount" id="totalAmount">Total: ₹0.00</div>
+  <button class="place-order-btn" onclick="placeOrder()">Place Order</button>
+</div>
+
+<script>
+  const checkoutContainer = document.getElementById("checkoutDetails");
+  const totalAmountElement = document.getElementById("totalAmount");
+  const shippingForm = document.getElementById("shippingForm");
+
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  function renderCheckout() {
+    if (cart.length === 0) {
+      checkoutContainer.innerHTML = "<p>Your cart is empty.</p>";
+      totalAmountElement.textContent = "Total: ₹0.00";
+      return;
+    }
+
+    let tableHTML = `
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Price (₹)</th>
+            <th>Quantity</th>
+            <th>Subtotal (₹)</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+
+    let total = 0;
+
+    cart.forEach(item => {
+      const subtotal = item.price * item.quantity;
+      total += subtotal;
+
+      tableHTML += `
+        <tr>
+          <td>${item.name}</td>
+          <td>${item.price.toFixed(2)}</td>
+          <td>${item.quantity}</td>
+          <td>₹${subtotal.toFixed(2)}</td>
+        </tr>
+      `;
+    });
+
+    tableHTML += `</tbody></table>`;
+    checkoutContainer.innerHTML = tableHTML;
+    totalAmountElement.textContent = `Total: ₹${total.toFixed(2)}`;
+  }
+
+  function placeOrder() {
+    const formFields = ["fullName", "address", "city", "state", "zip", "phone", "email"];
+    for (let field of formFields) {
+      const input = document.getElementById(field);
+      if (!input.value.trim()) {
+        alert("⚠️ Please fill all required shipping details.");
+        input.focus();
+        return;
+      }
+    }
+
+    alert("✅ Order placed successfully!");
+    localStorage.removeItem("cart");
+    window.location.href = "{{ url_for('index') }}";
+  }
+
+  renderCheckout();
+</script>
+
+</body>
+</html>

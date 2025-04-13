@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FreshMart | Grocery at Your Fingertips</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">🥬 FreshMart</div>
+    <ul class="nav-links">
+      <li><a href="{{ url_for('index') }}">Home</a></li>
+      <li><a href="{{ url_for('products') }}">Product Listing</a></li>
+      <li><a href="{{ url_for('cart') }}">Cart</a></li>
+      {% if session.get('user_id') %}
+        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        <li class="profile-container">
+          <img class="profile-icon" src="https://cdn-icons-png.flaticon.com/128/3177/3177440.png" width="40px" alt="Profile">
+          <span class="profile-name">{{ session.get('username', 'Guest') }}</span>
+        </li>
+      {% else %}
+        <li><a href="{{ url_for('login_page') }}">Login</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+
+  <section class="search-bar">
+    <form action="{{ url_for('search') }}" method="get">
+      <input type="text" id="searchInput" name="query" placeholder="Search for groceries..." />
+      <button type="submit" class="search-btn">🔍</button>
+    </form>
+  </section>
+  <header class="hero">
+    <div class="hero-content">
+      <h1>Fresh Groceries, Delivered Fast</h1>
+      <p>Shop farm-fresh produce, daily essentials, and much more.</p>
+      <a href="{{ url_for('products') }}" class="btn-primary">Shop Now</a>
+    </div>
+  </header>
+  <section class="categories">
+    <h2>Shop by Category</h2>
+    <div class="category-grid">
+      <a href="{{ url_for('fruits') }}"><div class="category-card">🍎 Fruits</div></a>
+      <a href="{{ url_for('vegetables') }}"><div class="category-card">🥦 Vegetables</div></a>
+      <a href="{{ url_for('dairy') }}"><div class="category-card">🧀 Dairy</div></a>
+      <a href="{{ url_for('pantry') }}"><div class="category-card">🥫 Pantry</div></a>
+    </div>
+  </section>
+  <section class="featured">
+    <h2 class="section-title">Top Picks for You</h2>
+    <div class="product-grid">
+      <div class="product-card">
+        <img src="https://images.everydayhealth.com/images/diet-nutrition/apples-101-about-1440x810.jpg" alt="Apple" />
+        <h3>Apples</h3>
+        <p>₹120 / kg</p>
+        <button onclick="addToCart('Fresh Apples', 120)">Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="https://www.indianhealthyrecipes.com/wp-content/uploads/2023/07/basmati-rice-recipe.jpg" alt="Rice" />
+        <h3>Basmati Rice</h3>
+        <p>₹25 / kg</p>
+        <button onclick="addToCart('Basmati Rice', 25)">Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAOrNRPKFdHza0pAzwWEShXHr4slS5jeDhSw&s" alt="Rice" />
+        <h3>Sunflower Oil</h3>
+        <p>₹25 / kg</p>
+        <button onclick="addToCart('Sunflower Oil', 25)">Add to Cart</button>
+      </div>
+    </div>
+  </section>
+  <footer class="footer">
+    <div class="footer-content">
+      <p>© 2025 FreshMart. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="{{ url_for('contact') }}">Contact</a>
+        <a href="{{ url_for('about') }}">About Us</a>
+      </div>
+    </div>
+  </footer>
+  <script>
+    function addToCart(name, price) {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const existing = cart.find(item => item.name === name);
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({ name, price, quantity: 1 });
+      }
+      localStorage.setItem('cart', JSON.stringify(cart));
+      alert(`${name} added to cart!`);
+    }
+  </script>
+</body>
+</html>
